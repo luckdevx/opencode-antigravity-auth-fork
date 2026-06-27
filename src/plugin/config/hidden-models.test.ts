@@ -92,9 +92,9 @@ describe("quota filtering with real probe data", () => {
   it("Antigravity quota: keeps claude + gemini-3 models whose base matches a non-hidden model", () => {
     const bases = getAllowedUpstreamBases()!;
     const kept: string[] = [];
-    for (const [name] of Object.entries(probeModels)) {
+    for (const [name, entry] of Object.entries(probeModels)) {
       // classifyQuotaGroup: only claude/gemini-3 matter for the Antigravity block
-      const lower = `${name} ${probeModels[name].displayName ?? ""}`.toLowerCase();
+      const lower = `${name} ${entry.displayName ?? ""}`.toLowerCase();
       const isClaude = lower.includes("claude");
       const isGemini3 = lower.includes("gemini-3") || lower.includes("gemini 3");
       if (!isClaude && !isGemini3) continue;
