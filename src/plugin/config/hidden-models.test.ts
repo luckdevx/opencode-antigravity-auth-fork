@@ -1,15 +1,27 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { loadConfig, initRuntimeConfig, getHiddenModels } from "./loader";
+import { initRuntimeConfig, getHiddenModels } from "./loader";
 import {
   OPENCODE_MODEL_DEFINITIONS,
   getEffectiveModelDefinitions,
   getAllowedUpstreamBases,
   getModelBaseName,
 } from "./models";
+import { DEFAULT_CONFIG } from "./schema";
+import type { AntigravityConfig } from "./schema";
 
-// Point loadConfig at the real user config dir via env, then init runtime.
+// Inject a mock config with hidden_models set (self-contained, no disk read).
+const HIDDEN = [
+  "antigravity-gemini-3-pro",
+  "gemini-3-pro-preview",
+  "gemini-3-flash-preview",
+  "gemini-3.1-pro-preview",
+  "gemini-3.1-pro-preview-customtools",
+  "gemini-2.5-flash",
+  "gemini-2.5-pro",
+];
+
 beforeAll(() => {
-  const cfg = loadConfig("/home/luck/projects/opencode-antigravity-auth");
+  const cfg: AntigravityConfig = { ...DEFAULT_CONFIG, hidden_models: HIDDEN };
   initRuntimeConfig(cfg);
 });
 
